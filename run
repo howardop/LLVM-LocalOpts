@@ -1,0 +1,10 @@
+#!/bin/bash
+# clang -O0 -emit-llvm -c constfold.c 
+# llvm-dis constfold.bc
+# opt -load ./LocalOpts.so -local-opts constfold.bc -o constfold-opt.ll -S
+
+clang -Xclang -disable-O0-optnone -O0 -emit-llvm -c constfold.c -o constfold.bc 
+llvm-dis constfold.bc
+opt -mem2reg constfold.bc -o constfold-m2r.bc
+llvm-dis constfold-m2r.bc
+opt -load ./LocalOpts.so -local-opts constfold-m2r.bc -o constfold-opt.ll -S 
