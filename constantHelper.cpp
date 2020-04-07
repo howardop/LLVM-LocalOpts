@@ -31,3 +31,30 @@ bool isConstant(Value *op, int& constant) {
     return false;
 
 } // end isConstant
+
+// Checks if num is a power of 2.  If so, returns the power so mult/div can be turned into shift
+bool isPowerOf2(int val, int& log2) {
+    int bitCount = 0;
+    int pos = -1;
+    if (val < 0) {
+        val = -val;
+    }
+    while (val > 0) {
+        pos = pos+1;
+        // Test if left-most bit is set
+        if ((val & 1) == 1) {
+            bitCount = bitCount + 1;
+            if (bitCount > 1) {
+                // If number is power of 2, it will have only 1 bit set
+                return false;
+            }
+        }
+        val = val >> 1;
+    }
+    if (bitCount == 1) {
+        log2 = pos;
+        return true;
+    }
+    return false;
+
+}
